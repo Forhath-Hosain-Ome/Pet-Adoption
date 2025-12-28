@@ -1,0 +1,59 @@
+version: '3.9'
+
+services:
+  web:
+    build: .
+    container_name: pet-adoption-web
+    command: gunicorn --bind 0.0.0.0:8000 --workers 4 --timeout 60 core.wsgi:application
+    volumes:
+      - .:/app
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+      - backups_volume:/app/backups
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=False
+      - SECRET_KEY=django-insecure-fnyocekzxz)-9761jrm8m99fcr(bn7pvv+78lea)sfj!a3a5e-
+      - ALLOWED_HOSTS=localhost,127.0.0.1,web
+      - DATABASE_URL=sqlite:////app/db.sqlite3
+    depends_on:
+      - db
+    networks:
+      - pet-adoption-network
+    restart: unless-stopped
+
+  db:
+    image: sqlite:latest
+    container_name: pet-adoption-db
+    volumes:
+      - db_volume:/data
+    networks:
+      - pet-adoption-network
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    container_name: pet-adoption-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - static_volume:/app/staticfiles:ro
+      - media_volume:/app/media:ro
+    depends_on:
+      - web
+    networks:
+      - pet-adoption-network
+    restart: unless-stopped
+
+volumes:
+  static_volume:
+  media_volume:
+  db_volume:
+  backups_volume:
+
+networks:
+  pet-adoption-network:
+    driver: bridge
