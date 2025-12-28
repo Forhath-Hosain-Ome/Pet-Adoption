@@ -17,10 +17,6 @@ else
     echo "No backup files found. Starting with empty database."
 fi
 
-# Collect static files
-echo "Collecting static files..."
-python manage.py collectstatic --noinput
-
 echo "Application ready!"
 
 # Execute the main command

@@ -24,7 +24,7 @@ services:
     restart: unless-stopped
 
   db:
-    image: sqlite:latest
+    image: alpine/sqlite:3.51.1
     container_name: pet-adoption-db
     volumes:
       - db_volume:/data

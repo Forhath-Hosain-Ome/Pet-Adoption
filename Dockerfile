@@ -28,9 +28,17 @@ COPY . .
 COPY docker-entrypoint.sh /app/docker-entrypoint.sh
 RUN chmod +x /app/docker-entrypoint.sh
 
+# Create necessary directories with permissive permissions
+RUN mkdir -p /app/staticfiles /app/media /app/backups && \
+    chmod -R 777 /app/staticfiles /app/media /app/backups
+
+# Collect static files as root before switching user
+RUN python manage.py collectstatic --noinput --clear
+
 # Create a non-root user to run the app
 RUN useradd -m -u 1000 appuser && \
     chown -R appuser:appuser /app
+
 USER appuser
 
 # Expose port
