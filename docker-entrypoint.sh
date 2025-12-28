@@ -9,6 +9,18 @@ echo "Starting Pet Adoption application..."
 echo "Running migrations..."
 python manage.py migrate
 
+# Create superuser if not exists
+echo "Setting up admin user..."
+python manage.py shell << END
+from django.contrib.auth import get_user_model
+User = get_user_model()
+if not User.objects.filter(username='admin').exists():
+    User.objects.create_superuser('admin', 'admin@localhost', 'admin')
+    print('✓ Superuser created: admin / admin')
+else:
+    print('✓ Superuser already exists')
+END
+
 # Check if backups directory exists and has data
 if [ -d "/app/backups" ] && [ "$(ls -A /app/backups/*.json 2>/dev/null)" ]; then
     echo "Loading data from backups..."
