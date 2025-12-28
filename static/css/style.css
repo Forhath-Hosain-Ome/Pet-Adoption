@@ -1,0 +1,993 @@
+/* =========================================
+   1. Variables & Reset
+   ========================================= */
+:root {
+    /* Color Palette */
+    --primary: #3498db;
+    --primary-dark: #2980b9;
+    --secondary: #2c3e50;
+    --accent: #e74c3c;
+    --success: #27ae60;
+    
+    /* Neutrals */
+    --light: #f8f9fa;
+    --white: #ffffff;
+    --dark: #1a1a1a;
+    --gray: #6c757d;
+    --border: #e9ecef;
+
+    /* Layout & Effects */
+    --radius: 8px;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    --shadow-hover: 0 10px 15px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+    --container-width: 1200px;
+}
+/* =========================================
+   DARK MODE CONFIGURATION (FIXED TEXT COLOR)
+   ========================================= */
+
+body.dark-mode {
+    /* Backgrounds */
+    --light: #121212;        /* পুরো পেজের ব্যাকগ্রাউন্ড (কালো) */
+    --white: #1e1e1e;        /* কার্ডের ব্যাকগ্রাউন্ড (ডার্ক গ্রে) */
+    
+    /* Text Colors - এখানে পরিবর্তন করা হয়েছে */
+    --dark: #ffffff;         /* সাধারণ প্যারাগ্রাফ টেক্সট (সাদা) */
+    --secondary: #ecf0f1;    /* হেডিং (h1, h2, h3) এবং নেভিগেশন টেক্সট (সাদা/হালকা) */
+    --gray: #bdc3c7;         /* ছোট টেক্সট বা সাবটাইটেল (হালকা ছাই) */
+    
+    /* Borders & Shadows */
+    --border: #444444;       /* বর্ডার একটু হালকা যাতে দেখা যায় */
+    --shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+}
+
+/* Specific fixes for Dark Mode */
+
+/* ১. ইনপুট ফিল্ডের টেক্সট কালার ঠিক করা */
+body.dark-mode input, 
+body.dark-mode select, 
+body.dark-mode textarea {
+    background-color: #2d2d2d;
+    color: #ffffff;
+    border-color: #444;
+}
+
+/* ২. ফুটার লিংক বা আইকন কালার ফিক্স */
+body.dark-mode .footer-section p,
+body.dark-mode .footer-section a {
+    color: #bdc3c7;
+}
+
+body.dark-mode .footer-section a:hover {
+    color: var(--primary);
+}
+
+/* ৩. নেভিগেশন বার ফিক্স (যদি প্রয়োজন হয়) */
+body.dark-mode .header {
+    background-color: #1e1e1e; /* হেডার ডার্ক হবে */
+    border-bottom: 1px solid #333;
+}
+
+body.dark-mode .nav-link {
+    color: #ecf0f1;
+}
+
+body.dark-mode .nav-link:hover,
+body.dark-mode .nav-link.active {
+    color: var(--primary);
+}
+
+/* ৪. মোবাইল মেনু বাটন */
+body.dark-mode .mobile-menu-btn {
+    color: #ffffff;
+}
+
+/* =========================================
+   FOOTER TEXT FIX FOR DARK MODE
+   ========================================= */
+
+/* ডার্ক মোডে ফুটার হেডিং কালো হবে */
+body.dark-mode .footer h3,
+body.dark-mode .footer-section h3 {
+    color: #2c3e50 !important; /* Dark Blue */
+}
+
+/* ডার্ক মোডে ফুটার প্যারাগ্রাফ এবং লিংক কালো হবে */
+body.dark-mode .footer p,
+body.dark-mode .footer ul li,
+body.dark-mode .footer ul li a {
+    color: #333333 !important; /* Dark Gray */
+}
+
+/* কপিরাইট টেক্সট কালো হবে */
+body.dark-mode .copyright {
+    color: #555555 !important;
+    border-top-color: #ddd; /* বর্ডারটাও ভিজিবল করা হলো */
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background-color: var(--light);
+    color: var(--dark);
+    line-height: 1.6;
+}
+
+ul { list-style: none; }
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; display: block; }
+
+/* =========================================
+   2. Layout & Utilities
+   ========================================= */
+.container {
+    width: 90%;
+    max-width: var(--container-width);
+    margin: 0 auto;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    border: 2px solid transparent;
+    gap: 0.5rem;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    color: var(--white);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    border-color: var(--white);
+    color: var(--white);
+}
+
+.btn-secondary:hover {
+    background-color: var(--white);
+    color: var(--primary);
+}
+
+.btn-outline {
+    border-color: var(--white);
+    color: var(--white);
+}
+
+.btn-outline:hover {
+    background-color: rgba(255,255,255,0.1);
+}
+
+.btn-block {
+    width: 100%;
+    border-radius: var(--radius);
+}
+
+.section-title {
+    text-align: center;
+    font-size: 2rem;
+    color: var(--secondary);
+    margin-bottom: 0.5rem;
+    position: relative;
+    padding-bottom: 1rem;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background-color: var(--primary);
+}
+
+/* =========================================
+   3. Header & Navigation
+   ========================================= */
+.header {
+    background-color: var(--white);
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 1rem 0;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.nav-list {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-link {
+    font-weight: 500;
+    color: var(--secondary);
+    transition: var(--transition);
+    position: relative;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: var(--primary);
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    background-color: var(--primary);
+    transition: var(--transition);
+}
+
+.nav-link:hover::after, .nav-link.active::after {
+    width: 100%;
+}
+
+.header-actions .btn {
+    padding: 0.5rem 1.2rem;
+    font-size: 0.9rem;
+    background-color: var(--primary); /* Overriding secondary style for header visibility */
+    border-color: var(--primary);
+    color: white;
+}
+
+.header-actions .btn:hover {
+    background-color: var(--primary-dark);
+    color: white;
+}
+
+.mobile-menu-btn {
+    display: none; /* Hidden on Desktop */
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    color: var(--secondary);
+    cursor: pointer;
+}
+
+/* =========================================
+   4. Hero Section
+   ========================================= */
+.hero-section {
+    background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.8)), 
+                url('https://images.unsplash.com/photo-1450778869180-41d0601e046e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+    background-size: cover;
+    background-position: center;
+    color: var(--white);
+    padding: 8rem 0;
+    text-align: center;
+}
+
+.hero-content h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    opacity: 0.9;
+}
+
+.btn-group {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+/* =========================================
+   5. Features Section
+   ========================================= */
+.features-section {
+    padding: 5rem 0;
+    background-color: var(--white);
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.feature-card {
+    padding: 2rem;
+    text-align: center;
+    background: var(--light);
+    border-radius: var(--radius);
+    transition: var(--transition);
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-hover);
+    background: var(--white);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
+}
+
+/* =========================================
+   6. Adopt Section (Filter & Grid)
+   ========================================= */
+.adopt-section {
+    padding: 5rem 0;
+    background-color: var(--light);
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.filter-bar {
+    background: var(--white);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 3rem;
+}
+
+.filter-select {
+    padding: 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    min-width: 150px;
+    background-color: var(--white);
+    cursor: pointer;
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.pets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.pet-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+
+.pet-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
+}
+
+.pet-image-wrapper {
+    position: relative;
+    height: 250px;
+}
+
+.pet-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: var(--accent);
+    color: var(--white);
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.pet-info {
+    padding: 1.5rem;
+}
+
+.pet-info h3 {
+    color: var(--secondary);
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+}
+
+.pet-stats {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    color: var(--gray);
+    font-size: 0.9rem;
+}
+
+.pet-stats i {
+    color: var(--primary);
+    margin-right: 4px;
+}
+
+/* =========================================
+   7. Donate Section
+   ========================================= */
+.donate-section {
+    padding: 5rem 0;
+    background-color: var(--primary);
+    color: var(--white);
+    text-align: center;
+}
+
+.donate-section .section-title {
+    color: var(--white);
+}
+
+.donate-section .section-title::after {
+    background-color: var(--white);
+}
+
+.donation-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.btn-amount {
+    background: transparent;
+    border: 2px solid rgba(255,255,255,0.3);
+    color: var(--white);
+    padding: 1rem 1.5rem;
+    border-radius: var(--radius);
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-amount:hover, .btn-amount.active {
+    background: var(--white);
+    color: var(--primary);
+    border-color: var(--white);
+}
+
+.custom-amount-input {
+    padding: 1rem;
+    border-radius: var(--radius);
+    border: none;
+    width: 150px;
+    text-align: center;
+    font-size: 1rem;
+}
+/* =========================================
+   Volunteer Form Styling
+   ========================================= */
+
+/* Form Container (The Card) */
+.standard-form {
+    background-color: var(--white);
+    padding: 2.5rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    max-width: 600px;       /* ফর্মটি খুব বেশি চওড়া হবে না */
+    margin: 0 auto;         /* মাঝখানে থাকবে */
+    border: 1px solid var(--border);
+}
+
+/* Form Group (Spacing between inputs) */
+.form-group {
+    margin-bottom: 1.5rem;
+    text-align: left;       /* টেক্সট বাম দিকে থাকবে */
+}
+
+/* Labels */
+.form-group label {
+    display: block;         /* লেভেল ইনপুটের উপরে থাকবে */
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--secondary);
+    font-size: 0.95rem;
+}
+
+/* Input Fields & Select Box */
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;            /* পুরো জায়গা জুড়ে থাকবে */
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+    color: var(--dark);
+    background-color: #f8f9fa;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    transition: var(--transition);
+    font-family: inherit;
+}
+
+/* Focus Effect (When clicking inside) */
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    background-color: var(--white);
+    box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1); /* হালকা নীল গ্লো */
+}
+
+/* Submit Button Adjustment */
+.standard-form button[type="submit"] {
+    width: 100%;            /* বাটনটি পুরো চওড়া হবে */
+    padding: 1rem;
+    font-size: 1.1rem;
+    margin-top: 1rem;
+}
+
+/* Responsive Fix for Mobile */
+@media (max-width: 768px) {
+    .standard-form {
+        padding: 1.5rem;
+    }
+}
+/* =========================================
+   8. Footer
+   ========================================= */
+.footer {
+    background-color: var(--secondary);
+    color: #dcdcdc;
+    padding: 4rem 0 1rem;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 3rem;
+    margin-bottom: 3rem;
+}
+
+.footer h3 {
+    color: var(--white);
+    margin-bottom: 1.5rem;
+    font-size: 1.2rem;
+}
+
+.footer-col ul li {
+    margin-bottom: 0.8rem;
+}
+
+.footer-col a:hover {
+    color: var(--primary);
+}
+
+
+.newsletter-form {
+    display: flex;
+}
+
+.newsletter-form input {
+    flex: 1;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 4px 0 0 4px;
+}
+
+.newsletter-form button {
+    padding: 0 1.2rem;
+    border: none;
+    background: var(--primary);
+    color: white;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.9rem;
+}
+
+/* =========================================
+   9. Modal
+   ========================================= */
+.modal {
+    display: none; /* Toggled by JS */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background: var(--white);
+    width: 90%;
+    max-width: 600px;
+    padding: 2rem;
+    border-radius: var(--radius);
+    position: relative;
+    z-index: 2001;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideUp 0.3s ease;
+}
+
+.modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--gray);
+}
+/* =========================================
+   PROFESSIONAL CONTACT PAGE DESIGN
+   ========================================= */
+
+/* 1. Page Header Banner */
+.page-header {
+    background: url('https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+    position: relative;
+    padding: 6rem 0;
+    text-align: center;
+    color: white;
+    margin-top: -1px;
+}
+
+.header-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(44, 62, 80, 0.7); /* Dark Overlay */
+}
+
+.header-text {
+    position: relative;
+    z-index: 2;
+}
+
+.header-text h1 {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+}
+
+.header-text p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+/* 2. Main Contact Section */
+.contact-section-pro {
+    padding: 5rem 0;
+    background-color: var(--light);
+}
+
+.contact-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr; /* Info < Form width */
+    gap: 4rem;
+    margin-bottom: 4rem;
+}
+
+/* Left Side: Info */
+.info-header h2 {
+    color: var(--primary);
+    margin-bottom: 1rem;
+    font-size: 2rem;
+}
+
+.info-header p {
+    color: var(--gray);
+    margin-bottom: 2.5rem;
+}
+
+.info-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.info-card-item {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    background: var(--white);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+
+.info-card-item:hover {
+    transform: translateX(10px);
+    box-shadow: var(--shadow-hover);
+}
+
+.icon-box {
+    width: 50px;
+    height: 50px;
+    background: rgba(52, 152, 219, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    font-size: 1.2rem;
+}
+
+.text-box h4 {
+    margin-bottom: 0.2rem;
+    color: var(--secondary);
+}
+
+.text-box p {
+    color: var(--gray);
+    font-size: 0.95rem;
+}
+
+/* Social Icons */
+.social-connect {
+    margin-top: 3rem;
+}
+
+.social-connect h4 {
+    margin-bottom: 1rem;
+    color: var(--secondary);
+}
+
+.social-icons-pro {
+    display: flex;
+    gap: 1rem;
+}
+
+.social-icons-pro a {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+
+.social-icons-pro a:hover {
+    background: var(--primary);
+    color: white;
+    transform: translateY(-3px);
+}
+
+/* Right Side: Form */
+.contact-form-pro {
+    background: var(--white);
+    padding: 3rem;
+    border-radius: var(--radius);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    border-top: 5px solid var(--primary);
+}
+
+.contact-form-pro h3 {
+    margin-bottom: 2rem;
+    color: var(--secondary);
+}
+
+.input-row {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.input-group {
+    margin-bottom: 1.5rem;
+    width: 100%;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--secondary);
+    font-size: 0.9rem;
+}
+
+.input-group input, 
+.input-group textarea {
+    width: 100%;
+    padding: 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: #f9f9f9;
+    transition: var(--transition);
+    font-family: inherit;
+}
+
+.input-group input:focus, 
+.input-group textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: var(--white);
+    box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);
+}
+
+/* Map */
+.map-container {
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    height: 400px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .contact-wrapper {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+    
+    .input-row {
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    .header-text h1 {
+        font-size: 2.5rem;
+    }
+}
+
+/* Dark Mode Support */
+body.dark-mode .contact-section-pro {
+    background-color: var(--light);
+}
+
+body.dark-mode .info-card-item,
+body.dark-mode .contact-form-pro {
+    background-color: #1f2b38; /* Dark Card BG */
+}
+
+body.dark-mode .input-group input, 
+body.dark-mode .input-group textarea {
+    background-color: #121212;
+    border-color: #333;
+    color: white;
+}
+
+body.dark-mode .text-box h4,
+body.dark-mode .social-connect h4,
+body.dark-mode .contact-form-pro h3,
+body.dark-mode .input-group label {
+    color: #ecf0f1;
+}
+
+/* Mobile Responsive Fixes */
+@media (max-width: 768px) {
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .contact-info-box {
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+    }
+}
+
+/* Dark Mode Adjustments for Contact Page */
+body.dark-mode .contact-page-section {
+    background-color: var(--light); /* Uses dark bg variable */
+}
+
+body.dark-mode .contact-info-box {
+    background-color: #1f3c5ad9; /* Slightly darker blue */
+}
+
+@keyframes slideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* =========================================
+   10. Responsive (Mobile)
+   ========================================= */
+@media (max-width: 768px) {
+    .mobile-menu-btn {
+        display: block;
+    }
+
+    .navbar {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: var(--white);
+        border-top: 1px solid var(--border);
+        padding: 1rem;
+        display: none; /* JS will toggle this */
+        box-shadow: var(--shadow);
+    }
+
+    .navbar.active {
+        display: block;
+    }
+
+    .nav-list {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
+
+    .header-actions .btn {
+        display: none;
+    }
+}
