@@ -1,0 +1,48 @@
+<form class="contact-form" id="contactForm" method="post">
+    {% csrf_token %}
+    
+    <div class="form-row">
+        <div class="form-group">
+            <label for="contactName">Full Name *</label>
+            <input type="text" id="contactName" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="contactEmail">Email Address *</label>
+            <input type="email" id="contactEmail" name="email" required>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label for="contactPhone">Phone Number (Optional)</label>
+        <input type="tel" id="contactPhone" name="phone">
+    </div>
+    
+    <div class="form-group">
+        <label for="contactSubject">Subject *</label>
+        <select id="contactSubject" name="subject" required>
+            <option value="">Select a subject...</option>
+            <option value="adoption_inquiry">Adoption Inquiry</option>
+            <option value="volunteer_questions">Volunteer Questions</option>
+            <option value="donation_info">Donation Information</option>
+            <option value="lost_pet">Lost Pet Report</option>
+            <option value="found_pet">Found Pet Report</option>
+            <option value="general_inquiry">General Inquiry</option>
+            <option value="feedback">Feedback</option>
+        </select>
+    </div>
+    
+    <div class="form-group">
+        <label for="contactMessage">Message *</label>
+        <textarea id="contactMessage" name="message" rows="6" required placeholder="Please share your message or inquiry..."></textarea>
+    </div>
+    
+    <div class="form-group checkbox">
+        <input type="checkbox" id="contactAgree" name="agree_to_terms" required>
+        <label for="contactAgree">I agree to be contacted about my inquiry *</label>
+    </div>
+    
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary btn-lg">Send Message</button>
+        <button type="reset" class="btn btn-secondary">Clear</button>
+    </div>
+</form>

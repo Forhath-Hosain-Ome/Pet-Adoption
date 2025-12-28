@@ -1,0 +1,42 @@
+<div class="pet-card">
+    <div class="pet-image">
+        {% if pet.image %}
+            <img src="{{ pet.image.url }}" alt="{{ pet.name }}" loading="lazy">
+        {% else %}
+            <img src="{% static 'images/default-pet.jpg' %}" alt="Default pet image" loading="lazy">
+        {% endif %}
+        <span class="pet-type-badge">{{ pet.type|upper }}</span>
+    </div>
+    
+    <div class="pet-info">
+        <h3>{{ pet.name }}</h3>
+        
+        <div class="pet-details">
+            <span class="detail">
+                <i class="fas fa-birthday-cake"></i>
+                {{ pet.age }} years
+            </span>
+            <span class="detail">
+                <i class="fas fa-venus-mars"></i>
+                {{ pet.gender|upper }}
+            </span>
+        </div>
+        
+        <p class="pet-description">{{ pet.description|truncatewords:20 }}</p>
+        
+        <div class="pet-status">
+            {% if pet.health_condition %}
+                <span class="badge health-{{ pet.health_condition|lower }}">
+                    {{ pet.get_health_condition_display }}
+                </span>
+            {% endif %}
+            {% if pet.is_available %}
+                <span class="badge available">Available</span>
+            {% else %}
+                <span class="badge adopted">Adopted</span>
+            {% endif %}
+        </div>
+        
+        <a href="#" class="btn btn-primary btn-sm" data-pet-id="{{ pet.id }}">View Details</a>
+    </div>
+</div>

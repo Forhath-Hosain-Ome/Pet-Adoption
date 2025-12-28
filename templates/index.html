@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <!-- Hero Section -->
+    {% include 'components/hero.html' %}
+    
+    <!-- Features Section -->
+    {% include 'components/features-section.html' %}
+    
+    <!-- Pet Adoption Section -->
+    <section id="adopt" class="adoption-section">
+        <div class="container">
+            <h2 class="section-title">Find Your Perfect Pet</h2>
+            
+            <!-- Filter Bar -->
+            {% include 'components/filter-bar.html' %}
+            
+            <!-- Pets Grid -->
+            <div class="pets-grid">
+                {% for pet in pets %}
+                    {% include 'components/pet-card.html' %}
+                {% empty %}
+                    <div class="empty-state">
+                        <p>No pets available at the moment. Please check back soon!</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    
+    <!-- Donation Section -->
+    <section id="donate" class="section-wrapper">
+        <div class="container">
+            {% include 'components/donation-form.html' %}
+        </div>
+    </section>
+    
+    <!-- Volunteer Section -->
+    <section id="volunteer" class="section-wrapper">
+        <div class="container">
+            {% include 'components/volunteer-form.html' %}
+        </div>
+    </section>
+    
+    <!-- Testimonials Section -->
+    <section class="section-wrapper">
+        <div class="container">
+            {% include 'components/testimonials.html' %}
+        </div>
+    </section>
+    
+    <!-- Newsletter Section -->
+    <section class="section-wrapper">
+        <div class="container">
+            {% include 'components/newsletter-form.html' %}
+        </div>
+    </section>
+{% endblock %}

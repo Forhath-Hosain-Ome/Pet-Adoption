@@ -1,0 +1,67 @@
+<section class="donation-section">
+    <div class="donation-header">
+        <h2>Make a Donation</h2>
+        <p>Your generous donation helps us rescue and care for animals in need.</p>
+    </div>
+    
+    <form class="donation-form" id="donationForm" method="post">
+        {% csrf_token %}
+        
+        <div class="donation-amounts">
+            <label class="amount-option">
+                <input type="radio" name="amount" value="25" required>
+                <span class="amount-display">$25</span>
+                <span class="amount-description">Feeds a pet for 1 week</span>
+            </label>
+            <label class="amount-option">
+                <input type="radio" name="amount" value="50">
+                <span class="amount-display">$50</span>
+                <span class="amount-description">Medical check-up</span>
+            </label>
+            <label class="amount-option">
+                <input type="radio" name="amount" value="100">
+                <span class="amount-display">$100</span>
+                <span class="amount-description">Monthly care for one pet</span>
+            </label>
+            <label class="amount-option">
+                <input type="radio" name="amount" value="250">
+                <span class="amount-display">$250</span>
+                <span class="amount-description">Emergency rescue operation</span>
+            </label>
+        </div>
+        
+        <div class="form-group">
+            <label for="customAmount">Or Enter Custom Amount</label>
+            <div class="input-group">
+                <span class="currency">$</span>
+                <input type="number" id="customAmount" name="custom_amount" min="1" step="0.01" placeholder="0.00">
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h3>Donor Information</h3>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="donorName">Full Name *</label>
+                    <input type="text" id="donorName" name="donor_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="donorEmail">Email *</label>
+                    <input type="email" id="donorEmail" name="donor_email" required>
+                </div>
+            </div>
+            
+            <div class="form-group checkbox">
+                <input type="checkbox" id="anonymous" name="is_anonymous">
+                <label for="anonymous">Make this donation anonymous</label>
+            </div>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary btn-lg">
+                <i class="fas fa-heart"></i> Donate Now
+            </button>
+        </div>
+    </form>
+</section>

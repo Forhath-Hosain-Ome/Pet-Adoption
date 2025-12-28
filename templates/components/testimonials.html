@@ -1,0 +1,40 @@
+<section class="testimonials-section">
+    <div class="container">
+        <h2 class="section-title">Success Stories</h2>
+        <p class="section-subtitle">Hear from our happy adoptive families</p>
+        
+        <div class="testimonials-grid">
+            {% for testimonial in testimonials %}
+                <div class="testimonial-card">
+                    <div class="testimonial-quote">
+                        <i class="fas fa-quote-left"></i>
+                    </div>
+                    <p class="testimonial-text">{{ testimonial.message }}</p>
+                    
+                    <div class="testimonial-author">
+                        <div class="author-info">
+                            <h4>{{ testimonial.author_name }}</h4>
+                            {% if testimonial.pet_name %}
+                                <p class="pet-name">Adopted: <strong>{{ testimonial.pet_name }}</strong></p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial-rating">
+                        {% for i in "01234" %}
+                            {% if i < testimonial.rating|default:5 %}
+                                <i class="fas fa-star"></i>
+                            {% else %}
+                                <i class="far fa-star"></i>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% empty %}
+                <div class="testimonial-card">
+                    <p class="testimonial-text">Check back soon for success stories from our adoptive families!</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>

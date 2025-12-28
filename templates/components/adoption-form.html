@@ -1,0 +1,73 @@
+<form class="adoption-form" id="adoptionForm" method="post">
+    {% csrf_token %}
+    
+    <div class="form-section">
+        <h3>Applicant Information</h3>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="firstName">First Name *</label>
+                <input type="text" id="firstName" name="applicant_first_name" required>
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name *</label>
+                <input type="text" id="lastName" name="applicant_last_name" required>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Email Address *</label>
+            <input type="email" id="email" name="applicant_email" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="phone">Phone Number *</label>
+            <input type="tel" id="phone" name="applicant_phone" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="address">Home Address *</label>
+            <textarea id="address" name="applicant_address" rows="3" required></textarea>
+        </div>
+    </div>
+    
+    <div class="form-section">
+        <h3>Pet Selection</h3>
+        
+        <div class="form-group">
+            <label for="petSelect">Select Pet *</label>
+            <select id="petSelect" name="pet" required>
+                <option value="">Choose a pet...</option>
+                {% for pet in pets %}
+                    {% if pet.is_available %}
+                        <option value="{{ pet.id }}">{{ pet.name }} - {{ pet.type|title }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    
+    <div class="form-section">
+        <h3>Questions</h3>
+        
+        <div class="form-group">
+            <label for="experience">Do you have experience with pets? *</label>
+            <textarea id="experience" name="experience_with_pets" rows="3" required></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="commitment">Why do you want to adopt? *</label>
+            <textarea id="commitment" name="reason_for_adoption" rows="4" required></textarea>
+        </div>
+        
+        <div class="form-group checkbox">
+            <input type="checkbox" id="agree" name="agree_to_terms" required>
+            <label for="agree">I agree to the adoption agreement and terms *</label>
+        </div>
+    </div>
+    
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary btn-lg">Submit Application</button>
+        <button type="reset" class="btn btn-secondary">Clear</button>
+    </div>
+</form>

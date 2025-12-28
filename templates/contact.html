@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <!-- Page Header -->
+    {% include 'components/page-header.html' with page_title='Contact Us' page_subtitle="We'd love to hear from you. Let's save lives together." %}
+
+        <section class="contact-section">
+            <div class="container">
+                <div class="contact-wrapper">
+                    <div class="contact-info-col">
+                        <h2>Get In Touch</h2>
+                        <p>Have any questions about adoption or volunteering? Reach out to us directly.</p>
+                        
+                        <div class="contact-info-item">
+                            <h4><i class="fas fa-phone-alt"></i> Phone</h4>
+                            <p><a href="tel:+1234567890">+1 (234) 567-8900</a></p>
+                        </div>
+                        
+                        <div class="contact-info-item">
+                            <h4><i class="fas fa-envelope"></i> Email</h4>
+                            <p><a href="mailto:info@pawstails.com">info@pawstails.com</a></p>
+                        </div>
+                        
+                        <div class="contact-info-item">
+                            <h4><i class="fas fa-map-marker-alt"></i> Address</h4>
+                            <p>123 Pet Lane, Animal City, AC 12345, USA</p>
+                        </div>
+                        
+                        <div class="contact-info-item">
+                            <h4><i class="fas fa-clock"></i> Hours</h4>
+                            <p>Mon-Fri: 9am-5pm | Sat: 10am-4pm | Sun: Closed</p>
+                        </div>
+                        
+                        <div class="social-links">
+                            <h4>Follow Us</h4>
+                            <div class="social-icons">
+                                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#"><i class="fab fa-instagram"></i></a>
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-form-col">
+                        {% include 'components/contact-form.html' %}
+                    </div>
+                </div>
+                
+                <div class="map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3650.582336034906!2d90.42195361543211!3d23.79791129288166!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c7ba919c7e8f%3A0x850e4b99477e6662!2sNorth%20Badda%2C%20Dhaka!5e0!3m2!1sen!2sbd!4v1679239239234!5m2!1sen!2sbd" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </section>
+{% endblock %}

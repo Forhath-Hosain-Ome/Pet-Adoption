@@ -1,0 +1,27 @@
+<header class="header">
+    <div class="container header-content">
+        <a href="{% url 'index' %}" class="logo">
+            <i class="fas fa-paw"></i>
+            <span>Paws & Tails</span>
+        </a>
+        
+        <nav class="navbar">
+            <ul class="nav-list">
+                <li><a href="{% url 'index' %}#home" class="nav-link active">Home</a></li>
+                <li><a href="{% url 'index' %}#adopt" class="nav-link">Adopt</a></li>
+                <li><a href="{% url 'index' %}#donate" class="nav-link">Donate</a></li>
+                <li><a href="{% url 'index' %}#volunteer" class="nav-link">Volunteer</a></li>
+            </ul>
+        </nav>
+        
+        <div class="header-actions">
+            <button id="themeToggle" class="btn btn-icon" aria-label="Toggle Dark Mode">
+                <i class="fas fa-moon"></i>
+            </button>
+
+            <a href="{% url 'contact' %}" class="btn btn-secondary contact-btn">Contact Us</a>
+
+            <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+        </div>
+    </div>
+</header>

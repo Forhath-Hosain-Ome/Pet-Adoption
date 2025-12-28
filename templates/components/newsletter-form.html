@@ -1,0 +1,25 @@
+<section class="newsletter-section">
+    <div class="newsletter-container">
+        <div class="newsletter-header">
+            <h2>Subscribe to Our Newsletter</h2>
+            <p>Get updates on new rescues, success stories, and adoption events.</p>
+        </div>
+        
+        <form class="newsletter-form" id="newsletterForm" method="post">
+            {% csrf_token %}
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <input type="email" id="subEmail" name="email" placeholder="Enter your email" required>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-paper-plane"></i> Subscribe
+                </button>
+            </div>
+            
+            <p class="newsletter-consent">
+                <small>We respect your privacy. You can unsubscribe at any time by clicking the link in our emails.</small>
+            </p>
+        </form>
+    </div>
+</section>

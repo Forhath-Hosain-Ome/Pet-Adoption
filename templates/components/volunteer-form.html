@@ -1,0 +1,94 @@
+<section class="volunteer-section">
+    <div class="volunteer-header">
+        <h2>Join Our Team</h2>
+        <p>Become a volunteer and help us make a difference in animals' lives.</p>
+    </div>
+    
+    <form class="volunteer-form" id="volunteerForm" method="post">
+        {% csrf_token %}
+        
+        <div class="form-section">
+            <h3>Personal Information</h3>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="volFirstName">First Name *</label>
+                    <input type="text" id="volFirstName" name="first_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="volLastName">Last Name *</label>
+                    <input type="text" id="volLastName" name="last_name" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="volEmail">Email Address *</label>
+                <input type="email" id="volEmail" name="email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="volPhone">Phone Number *</label>
+                <input type="tel" id="volPhone" name="phone" required>
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h3>Volunteer Preferences</h3>
+            
+            <div class="form-group">
+                <label>Available Roles *</label>
+                <div class="checkbox-group">
+                    <div class="form-check">
+                        <input type="checkbox" id="role1" name="roles" value="animal_care">
+                        <label for="role1">Animal Care & Feeding</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" id="role2" name="roles" value="adoption_support">
+                        <label for="role2">Adoption Support</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" id="role3" name="roles" value="fundraising">
+                        <label for="role3">Fundraising</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" id="role4" name="roles" value="social_media">
+                        <label for="role4">Social Media & Marketing</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" id="role5" name="roles" value="events">
+                        <label for="role5">Events & Outreach</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="availability">Weekly Availability *</label>
+                <select id="availability" name="weekly_hours" required>
+                    <option value="">Select hours per week...</option>
+                    <option value="2-5">2-5 hours</option>
+                    <option value="5-10">5-10 hours</option>
+                    <option value="10+">10+ hours</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h3>Background</h3>
+            
+            <div class="form-group">
+                <label for="experience">Tell us about your experience with animals *</label>
+                <textarea id="experience" name="experience" rows="4" required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="motivation">Why do you want to volunteer? *</label>
+                <textarea id="motivation" name="motivation" rows="4" required></textarea>
+            </div>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary btn-lg">Submit Application</button>
+            <button type="reset" class="btn btn-secondary">Clear</button>
+        </div>
+    </form>
+</section>
