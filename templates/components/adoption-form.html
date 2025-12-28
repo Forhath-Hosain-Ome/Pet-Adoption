@@ -1,68 +1,47 @@
 <form class="adoption-form" id="adoptionForm" method="post">
     {% csrf_token %}
+    <input type="hidden" id="adoptionPetId" name="pet">
     
     <div class="form-section">
         <h3>Applicant Information</h3>
         
-        <div class="form-row">
-            <div class="form-group">
-                <label for="firstName">First Name *</label>
-                <input type="text" id="firstName" name="applicant_first_name" required>
-            </div>
-            <div class="form-group">
-                <label for="lastName">Last Name *</label>
-                <input type="text" id="lastName" name="applicant_last_name" required>
-            </div>
+        <div class="form-group">
+            <label for="adopterName">Full Name *</label>
+            <input type="text" id="adopterName" name="adopter_name" required>
         </div>
         
         <div class="form-group">
-            <label for="email">Email Address *</label>
-            <input type="email" id="email" name="applicant_email" required>
+            <label for="adopterEmail">Email Address *</label>
+            <input type="email" id="adopterEmail" name="adopter_email" required>
         </div>
         
         <div class="form-group">
-            <label for="phone">Phone Number *</label>
-            <input type="tel" id="phone" name="applicant_phone" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="address">Home Address *</label>
-            <textarea id="address" name="applicant_address" rows="3" required></textarea>
+            <label for="adopterPhone">Phone Number *</label>
+            <input type="tel" id="adopterPhone" name="adopter_phone" required>
         </div>
     </div>
     
     <div class="form-section">
-        <h3>Pet Selection</h3>
+        <h3>Adoption Details</h3>
         
         <div class="form-group">
-            <label for="petSelect">Select Pet *</label>
-            <select id="petSelect" name="pet" required>
-                <option value="">Choose a pet...</option>
-                {% for pet in pets %}
-                    {% if pet.is_available %}
-                        <option value="{{ pet.id }}">{{ pet.name }} - {{ pet.type|title }}</option>
-                    {% endif %}
-                {% endfor %}
+            <label for="homeType">Home Type *</label>
+            <select id="homeType" name="home_type" required>
+                <option value="">Select...</option>
+                <option value="apartment">Apartment</option>
+                <option value="house">House</option>
+                <option value="farm">Farm</option>
             </select>
         </div>
-    </div>
-    
-    <div class="form-section">
-        <h3>Questions</h3>
         
         <div class="form-group">
-            <label for="experience">Do you have experience with pets? *</label>
-            <textarea id="experience" name="experience_with_pets" rows="3" required></textarea>
+            <label for="reasonForAdoption">Why do you want to adopt? *</label>
+            <textarea id="reasonForAdoption" name="reason_for_adoption" rows="4" required></textarea>
         </div>
         
         <div class="form-group">
-            <label for="commitment">Why do you want to adopt? *</label>
-            <textarea id="commitment" name="reason_for_adoption" rows="4" required></textarea>
-        </div>
-        
-        <div class="form-group checkbox">
-            <input type="checkbox" id="agree" name="agree_to_terms" required>
-            <label for="agree">I agree to the adoption agreement and terms *</label>
+            <label for="otherPets">Do you have other pets? (List them)</label>
+            <textarea id="otherPets" name="other_pets" rows="3"></textarea>
         </div>
     </div>
     
