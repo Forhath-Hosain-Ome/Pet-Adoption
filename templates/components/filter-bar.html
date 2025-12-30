@@ -1,7 +1,7 @@
 <div class="filter-bar">
     <form class="filter-form" id="petFilterForm" method="get">
         <div class="filter-group">
-            <label for="petType">Pet Type</label>
+            <label class="d-none" for="petType">Pet Type</label>
             <select id="petType" name="type" class="filter-select">
                 <option value="">All Types</option>
                 <option value="dog">Dog</option>
@@ -13,7 +13,7 @@
         </div>
         
         <div class="filter-group">
-            <label for="ageRange">Age Range</label>
+            <label class="d-none" for="ageRange">Age Range</label>
             <select id="ageRange" name="age_range" class="filter-select">
                 <option value="">All Ages</option>
                 <option value="0-1">0-1 year</option>
@@ -24,7 +24,7 @@
         </div>
         
         <div class="filter-group">
-            <label for="gender">Gender</label>
+            <label class="d-none" for="gender">Gender</label>
             <select id="gender" name="gender" class="filter-select">
                 <option value="">All Genders</option>
                 <option value="male">Male</option>
@@ -33,7 +33,7 @@
         </div>
         
         <div class="filter-group">
-            <label for="health">Health Status</label>
+            <label class="d-none" for="health">Health Status</label>
             <select id="health" name="health" class="filter-select">
                 <option value="">All Health Status</option>
                 <option value="healthy">Healthy</option>
@@ -43,8 +43,7 @@
         </div>
         
         <div class="filter-actions">
-            <button type="submit" class="btn btn-primary">Filter</button>
-            <button type="reset" class="btn btn-secondary">Reset</button>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i>Filter</button>
         </div>
     </form>
 </div>

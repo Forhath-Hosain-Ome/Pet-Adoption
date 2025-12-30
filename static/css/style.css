@@ -289,9 +289,11 @@ img { max-width: 100%; display: block; }
 /* =========================================
    4. Hero Section
    ========================================= */
-.hero-section {
+.hero {
     background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.8)), 
-                url('https://images.unsplash.com/photo-1450778869180-41d0601e046e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+                url("/static/images/cover/Hero-Cover.avif");
+    /* background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.8)), 
+                url('https://images.unsplash.com/photo-1450778869180-41d0601e046e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'); */
     background-size: cover;
     background-position: center;
     color: var(--white);
@@ -356,7 +358,7 @@ img { max-width: 100%; display: block; }
 /* =========================================
    6. Adopt Section (Filter & Grid)
    ========================================= */
-.adopt-section {
+.adoption-section {
     padding: 5rem 0;
     background-color: var(--light);
 }
@@ -366,7 +368,7 @@ img { max-width: 100%; display: block; }
     margin-bottom: 3rem;
 }
 
-.filter-bar {
+.filter-bar .filter-form {
     background: var(--white);
     padding: 1.5rem;
     border-radius: var(--radius);
@@ -461,14 +463,14 @@ img { max-width: 100%; display: block; }
 /* =========================================
    7. Donate Section
    ========================================= */
-.donate-section {
+.donation-section {
     padding: 5rem 0;
     background-color: var(--primary);
     color: var(--white);
     text-align: center;
 }
 
-.donate-section .section-title {
+.donation-section .section-title {
     color: var(--white);
 }
 

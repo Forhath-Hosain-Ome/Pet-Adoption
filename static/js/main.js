@@ -1,374 +1,103 @@
 /**
- * Paws & Tails - Main JavaScript with API Integration
- * Saves and retrieves data from database
+ * Paws & Tails - Main JavaScript
+ * Professional & Clean Architecture
  */
-
-const API_BASE = '/api/v1';
 
 document.addEventListener('DOMContentLoaded', () => {
     
     // =========================================
-    // 1. Load Pets from Database
+    // 1. Mock Database (Fake API Response)
     // =========================================
-    async function loadPets() {
-        try {
-            const response = await fetch(`${API_BASE}/pets/`);
-            const data = await response.json();
-            const pets = data.results || data;
-            
-            if (pets.length === 0) {
-                document.getElementById('petsContainer').innerHTML = '<p>No pets available</p>';
-                return;
-            }
-            
-            displayPets(pets);
-        } catch (error) {
-            console.error('Error loading pets:', error);
+    const petsData = [
+        {
+            id: 1,
+            name: "Max",
+            type: "dog",
+            age: "2 yrs",
+            gender: "male",
+            image: "https://images.unsplash.com/photo-1552053831-71594a27632d?w=500&q=60",
+            location: "Dhaka",
+            badge: "New",
+            desc: "Max is energetic and loves playing fetch.",
+            features: ["Vaccinated", "Friendly", "Trained"]
+        },
+        {
+            id: 2,
+            name: "Luna",
+            type: "cat",
+            age: "1 yr",
+            gender: "female",
+            image: "https://images.unsplash.com/photo-1533738363-b7f9aef128ce?w=500&q=60",
+            location: "Chittagong",
+            badge: "Popular",
+            desc: "Luna is a calm cat who loves looking out the window.",
+            features: ["House Trained", "Calm", "Indoor"]
+        },
+        {
+            id: 3,
+            name: "Coco",
+            type: "dog",
+            age: "6 mon",
+            gender: "male",
+            image: "https://images.unsplash.com/photo-1583512603806-077998240c7a?w=500&q=60",
+            location: "Sylhet",
+            badge: "Special",
+            desc: "Coco is a fluffy bunny looking for carrots and love.",
+            features: ["Gentle", "Small", "Cute"]
+        },
+        {
+            id: 4,
+            name: "Rocky",
+            type: "dog",
+            age: "4 yrs",
+            gender: "male",
+            image: "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=500&q=60",
+            location: "Dhaka",
+            badge: "",
+            desc: "Rocky is a loyal guard dog and very protective.",
+            features: ["Guard Dog", "Loyal", "Strong"]
+        },
+        {
+            id: 5,
+            name: "Mimi",
+            type: "cat",
+            age: "3 yrs",
+            gender: "female",
+            image: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=500&q=60",
+            location: "Rajshahi",
+            badge: "Urgent",
+            desc: "Mimi needs a home urgently due to shelter space.",
+            features: ["Vaccinated", "Shy", "Needs Love"]
+        },
+        {
+            id: 6,
+            name: "Tweety",
+            type: "bird",
+            age: "1 yr",
+            gender: "female",
+            image: "https://images.unsplash.com/photo-1606567595334-d39972c85dbe?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            location: "Khulna",
+            badge: "",
+            desc: "Tweety sings beautiful songs every morning.",
+            features: ["Singer", "Colorful", "Active"]
         }
-    }
-
-    function displayPets(pets) {
-        const container = document.getElementById('petsContainer');
-        if (!container) return;
-        
-        container.innerHTML = pets.map(pet => `
-            <div class="pet-card">
-                <div class="pet-image">
-                    ${pet.image ? `<img src="${pet.image}" alt="${pet.name}">` : '<div class="no-image">No Image</div>'}
-                </div>
-                <div class="pet-info">
-                    <h3>${pet.name}</h3>
-                    <p><strong>Type:</strong> ${pet.pet_type}</p>
-                    <p><strong>Age:</strong> ${pet.age}</p>
-                    <p><strong>Gender:</strong> ${pet.gender}</p>
-                    <p><strong>Status:</strong> ${pet.status}</p>
-                    ${pet.description ? `<p>${pet.description}</p>` : ''}
-                    <button onclick="viewPetDetails(${pet.id})" class="btn btn-primary">View Details</button>
-                </div>
-            </div>
-        `).join('');
-    }
+    ];
 
     // =========================================
-    // 2. Filter Pets
+    // 2. DOM Elements Selection
     // =========================================
-    document.getElementById('filterType')?.addEventListener('change', filterPets);
-    document.getElementById('filterGender')?.addEventListener('change', filterPets);
-    document.getElementById('filterAge')?.addEventListener('change', filterPets);
-    document.getElementById('searchBtn')?.addEventListener('click', filterPets);
-
-    async function filterPets() {
-        const type = document.getElementById('filterType')?.value || '';
-        const gender = document.getElementById('filterGender')?.value || '';
-        const age = document.getElementById('filterAge')?.value || '';
-        
-        let url = `${API_BASE}/pets/?`;
-        if (type) url += `pet_type=${type}&`;
-        if (gender) url += `gender=${gender}&`;
-        if (age) url += `age=${age}&`;
-        
-        try {
-            const response = await fetch(url);
-            const data = await response.json();
-            displayPets(data.results || data);
-        } catch (error) {
-            console.error('Error filtering pets:', error);
-        }
-    }
-
-    // =========================================
-    // 3. Contact Form Submission
-    // =========================================
-    const contactForm = document.getElementById('contactForm');
-    if (contactForm) {
-        contactForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const formData = {
-                name: document.getElementById('contactName').value,
-                email: document.getElementById('contactEmail').value,
-                phone: document.getElementById('contactPhone').value,
-                message: document.getElementById('contactMessage').value
-            };
-            
-            try {
-                const response = await fetch(`${API_BASE}/contacts/`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': getCookie('csrftoken')
-                    },
-                    body: JSON.stringify(formData)
-                });
-                
-                if (response.ok) {
-                    alert('Thank you! Your message has been saved.');
-                    contactForm.reset();
-                } else {
-                    alert('Error submitting form');
-                }
-            } catch (error) {
-                console.error('Error submitting contact form:', error);
-            }
-        });
-    }
-
-    // =========================================
-    // 4. Adoption Form Submission
-    // =========================================
-    const adoptionForm = document.getElementById('adoptionForm');
-    if (adoptionForm) {
-        adoptionForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const petId = adoptionForm.dataset.petId || document.getElementById('adoptionPetId').value;
-            const formData = {
-                adopter_name: document.getElementById('adopterName').value,
-                adopter_email: document.getElementById('adopterEmail').value,
-                adopter_phone: document.getElementById('adopterPhone').value,
-                pet: petId,
-                reason_for_adoption: document.getElementById('reasonForAdoption').value,
-                home_type: document.getElementById('homeType').value,
-                other_pets: document.getElementById('otherPets').value
-            };
-            
-            try {
-                const response = await fetch(`${API_BASE}/adoptions/`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': getCookie('csrftoken')
-                    },
-                    body: JSON.stringify(formData)
-                });
-                
-                if (response.ok) {
-                    alert('Your adoption application has been submitted!');
-                    adoptionForm.reset();
-                } else {
-                    alert('Error submitting adoption form');
-                }
-            } catch (error) {
-                console.error('Error submitting adoption form:', error);
-            }
-        });
-    }
-
-    // =========================================
-    // 5. Volunteer Form Submission
-    // =========================================
-    const volunteerForm = document.getElementById('volunteerForm');
-    if (volunteerForm) {
-        volunteerForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const formData = {
-                name: document.getElementById('volunteerName').value,
-                email: document.getElementById('volunteerEmail').value,
-                phone: document.getElementById('volunteerPhone').value,
-                interest: document.getElementById('volunteerInterest').value,
-                bio: document.getElementById('volunteerBio').value,
-                availability: document.getElementById('volunteerAvailability').value
-            };
-            
-            try {
-                const response = await fetch(`${API_BASE}/volunteers/`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': getCookie('csrftoken')
-                    },
-                    body: JSON.stringify(formData)
-                });
-                
-                if (response.ok) {
-                    alert('Thank you for volunteering! We\'ll contact you soon.');
-                    volunteerForm.reset();
-                } else {
-                    alert('Error submitting volunteer form');
-                }
-            } catch (error) {
-                console.error('Error submitting volunteer form:', error);
-            }
-        });
-    }
-
-    // =========================================
-    // 6. Donation Form Submission
-    // =========================================
-    const donationForm = document.getElementById('donationForm');
-    if (donationForm) {
-        donationForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const isCustom = document.getElementById('donationCustom')?.checked || false;
-            const formData = {
-                donor_name: document.getElementById('donorName').value,
-                donor_email: document.getElementById('donorEmail').value,
-                amount: isCustom ? 
-                    document.getElementById('customAmount').value : 
-                    document.getElementById('donationAmount').value,
-                is_custom: isCustom,
-                message: document.getElementById('donationMessage').value,
-                payment_status: 'pending'
-            };
-            
-            try {
-                const response = await fetch(`${API_BASE}/donations/`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': getCookie('csrftoken')
-                    },
-                    body: JSON.stringify(formData)
-                });
-                
-                if (response.ok) {
-                    alert('Thank you for your donation!');
-                    donationForm.reset();
-                } else {
-                    alert('Error processing donation');
-                }
-            } catch (error) {
-                console.error('Error submitting donation form:', error);
-            }
-        });
-    }
-
-    // =========================================
-    // 7. Newsletter Subscription
-    // =========================================
-    const newsletterForm = document.getElementById('newsletterForm');
-    if (newsletterForm) {
-        newsletterForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const email = document.getElementById('newsletterEmail').value;
-            
-            try {
-                const response = await fetch(`${API_BASE}/newsletter/`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': getCookie('csrftoken')
-                    },
-                    body: JSON.stringify({ email, is_active: true })
-                });
-                
-                if (response.ok) {
-                    alert('Thank you for subscribing!');
-                    newsletterForm.reset();
-                } else {
-                    alert('Error subscribing to newsletter');
-                }
-            } catch (error) {
-                console.error('Error subscribing to newsletter:', error);
-            }
-        });
-    }
-
-    // =========================================
-    // 8. Mobile Menu Toggle
-    // =========================================
-    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-    const navbar = document.querySelector('.navbar');
-    if (mobileMenuBtn) {
-        mobileMenuBtn.addEventListener('click', () => {
-            navbar.classList.toggle('active');
-        });
-    }
-
-    // =========================================
-    // 9. Scroll to Top
-    // =========================================
-    window.addEventListener('scroll', () => {
-        const scrollBtn = document.getElementById('scrollTopBtn');
-        if (scrollBtn) {
-            scrollBtn.style.display = window.scrollY > 300 ? 'block' : 'none';
-        }
-    });
-
-    const scrollTopBtn = document.getElementById('scrollTopBtn');
-    if (scrollTopBtn) {
-        scrollTopBtn.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-    }
-
-    // =========================================
-    // 10. Load pets on page load
-    // =========================================
-    loadPets();
-});
-
-// =========================================
-// Helper Functions
-// =========================================
-
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-
-async function viewPetDetails(petId) {
-    try {
-        const response = await fetch(`${API_BASE}/pets/${petId}/`);
-        const pet = await response.json();
-        
-        const modal = document.getElementById('petModal');
-        const modalBody = document.getElementById('modalBody');
-        
-        if (modalBody) {
-            modalBody.innerHTML = `
-                <div class="pet-details">
-                    ${pet.image ? `<img src="${pet.image}" alt="${pet.name}" style="max-width: 100%; height: auto;">` : ''}
-                    <h2>${pet.name}</h2>
-                    <p><strong>Type:</strong> ${pet.pet_type}</p>
-                    <p><strong>Breed:</strong> ${pet.breed || 'Unknown'}</p>
-                    <p><strong>Age:</strong> ${pet.age}</p>
-                    <p><strong>Gender:</strong> ${pet.gender}</p>
-                    <p><strong>Status:</strong> ${pet.status}</p>
-                    <p><strong>Vaccinated:</strong> ${pet.is_vaccinated ? 'Yes' : 'No'}</p>
-                    <p><strong>Neutered/Spayed:</strong> ${pet.is_neutered_spayed ? 'Yes' : 'No'}</p>
-                    <p><strong>Health Status:</strong> ${pet.health_status || 'Healthy'}</p>
-                    <p><strong>Description:</strong> ${pet.description || 'No description available'}</p>
-                    <button onclick="adoptPet(${pet.id})" class="btn btn-success">Adopt ${pet.name}</button>
-                </div>
-            `;
-            modal.style.display = 'block';
-        }
-    } catch (error) {
-        console.error('Error loading pet details:', error);
-    }
-}
-
-function adoptPet(petId) {
-    const modal = document.getElementById('adoptionModal');
-    if (modal) {
-        document.getElementById('adoptionPetId').value = petId;
-        modal.style.display = 'block';
-    }
-}
-
-// Close modals
-document.addEventListener('click', (e) => {
-    if (e.target.classList.contains('modal-close')) {
-        e.target.closest('.modal').style.display = 'none';
-    }
-    if (e.target.classList.contains('modal')) {
-        e.target.style.display = 'none';
-    }
-});
+    const elements = {
+        petsContainer: document.getElementById('petsContainer'),
+        filterType: document.getElementById('filterType'),
+        filterAge: document.getElementById('filterAge'),
+        filterGender: document.getElementById('filterGender'),
+        searchBtn: document.getElementById('searchBtn'),
+        mobileMenuBtn: document.querySelector('.mobile-menu-btn'),
+        navbar: document.querySelector('.navbar'),
+        modal: document.getElementById('petModal'),
+        modalBody: document.getElementById('modalBody'),
+        modalClose: document.querySelector('.modal-close'),
+        volunteerForm: document.getElementById('volunteerForm'),
         donateBtns: document.querySelectorAll('.btn-amount')
     };
 
