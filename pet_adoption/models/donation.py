@@ -21,6 +21,7 @@ class Donation(models.Model):
     
     # Predefined or custom
     is_custom = models.BooleanField(default=False)
+    is_anonymous = models.BooleanField(default=False)
     
     # Payment tracking
     payment_status = models.CharField(max_length=20, choices=PAYMENT_STATUS_CHOICES, default='pending')
