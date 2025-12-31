@@ -44,7 +44,7 @@ class Pet(models.Model):
     
     # Description
     description = models.TextField(blank=True, null=True)
-    image = models.ImageField(upload_to='pets/', blank=True, null=True)
+    image = models.ImageField(upload_to='images/pets/', blank=True, null=True)
     
     # Timestamps
     created_at = models.DateTimeField(auto_now_add=True)
