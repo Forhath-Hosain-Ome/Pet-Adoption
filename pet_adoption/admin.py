@@ -78,8 +78,8 @@ class AdoptionAdmin(admin.ModelAdmin):
 @admin.register(Contact)
 class ContactAdmin(admin.ModelAdmin):
     """Admin interface for Contact model"""
-    list_display = ['name', 'email', 'is_read', 'created_at']
-    list_filter = ['is_read', 'created_at']
+    list_display = ['name', 'email', 'subject', 'is_read', 'created_at']
+    list_filter = ['is_read', 'subject', 'created_at']
     search_fields = ['name', 'email', 'message']
     readonly_fields = ['created_at', 'updated_at']
     fieldsets = (
@@ -87,7 +87,7 @@ class ContactAdmin(admin.ModelAdmin):
             'fields': ('name', 'email', 'phone')
         }),
         ('Message', {
-            'fields': ('message',)
+            'fields': ('subject', 'message')
         }),
         ('Status', {
             'fields': ('is_read',)
@@ -111,16 +111,16 @@ class ContactAdmin(admin.ModelAdmin):
 @admin.register(Volunteer)
 class VolunteerAdmin(admin.ModelAdmin):
     """Admin interface for Volunteer model"""
-    list_display = ['name', 'email', 'interest', 'status', 'applied_at']
-    list_filter = ['status', 'interest', 'applied_at']
-    search_fields = ['name', 'email', 'bio']
+    list_display = ['first_name', 'last_name', 'email', 'status', 'applied_at']
+    list_filter = ['status', 'applied_at']
+    search_fields = ['first_name', 'last_name', 'email', 'experience']
     readonly_fields = ['applied_at', 'updated_at']
     fieldsets = (
         ('Personal Information', {
-            'fields': ('name', 'email', 'phone')
+            'fields': ('first_name', 'last_name', 'email', 'phone')
         }),
         ('Volunteer Details', {
-            'fields': ('interest', 'bio', 'availability')
+            'fields': ('roles', 'weekly_hours', 'experience', 'motivation')
         }),
         ('Status', {
             'fields': ('status',)
@@ -145,12 +145,12 @@ class VolunteerAdmin(admin.ModelAdmin):
 class DonationAdmin(admin.ModelAdmin):
     """Admin interface for Donation model"""
     list_display = ['amount', 'donor_name', 'payment_status', 'created_at']
-    list_filter = ['payment_status', 'created_at', 'is_custom']
+    list_filter = ['payment_status', 'created_at', 'is_custom', 'is_anonymous']
     search_fields = ['donor_name', 'donor_email', 'transaction_id']
     readonly_fields = ['created_at', 'completed_at']
     fieldsets = (
         ('Donor Information', {
-            'fields': ('donor_name', 'donor_email')
+            'fields': ('donor_name', 'donor_email', 'is_anonymous')
         }),
         ('Donation Details', {
             'fields': ('amount', 'is_custom', 'message')
