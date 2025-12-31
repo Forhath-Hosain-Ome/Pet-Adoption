@@ -107,6 +107,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Render Pets to the Grid
     const renderPets = (pets) => {
+        if (!elements.petsContainer) return; // Skip if element doesn't exist
+        
         elements.petsContainer.innerHTML = ""; // Clear previous content
 
         if (pets.length === 0) {
@@ -144,6 +146,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Filter Logic
     const filterPets = () => {
+        if (!elements.filterType || !elements.filterGender) return; // Skip if filters don't exist
+        
         const type = elements.filterType.value.toLowerCase();
         const gender = elements.filterGender.value.toLowerCase();
         
@@ -207,53 +211,254 @@ document.addEventListener('DOMContentLoaded', () => {
     // 4. Event Listeners Initialization
     // =========================================
 
-    // Initial Render
-    renderPets(petsData);
+    // Initial Render (only if container exists)
+    if (elements.petsContainer) {
+        renderPets(petsData);
+    }
 
     // Search / Filter Button Click
-    elements.searchBtn.addEventListener('click', (e) => {
-        e.preventDefault(); // Prevent form submit reload
-        const btnText = elements.searchBtn.innerHTML;
-        elements.searchBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Searching...';
-        
-        // Simulate API Delay
-        setTimeout(() => {
-            filterPets();
-            elements.searchBtn.innerHTML = btnText;
-            showNotification('Search results updated!');
-        }, 500);
-    });
-
-    // Mobile Menu Toggle
-    elements.mobileMenuBtn.addEventListener('click', () => {
-        elements.navbar.classList.toggle('active');
-    });
-
-    // Modal Close Actions
-    elements.modalClose.addEventListener('click', closeModal);
-    elements.modal.addEventListener('click', (e) => {
-        if (e.target === elements.modal) closeModal();
-    });
-
-    // Volunteer Form Submit
-    if(elements.volunteerForm) {
-        elements.volunteerForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            showNotification('Application Submitted Successfully!');
-            elements.volunteerForm.reset();
+    if (elements.searchBtn) {
+        elements.searchBtn.addEventListener('click', (e) => {
+            e.preventDefault(); // Prevent form submit reload
+            const btnText = elements.searchBtn.innerHTML;
+            elements.searchBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Searching...';
+            
+            // Simulate API Delay
+            setTimeout(() => {
+                filterPets();
+                elements.searchBtn.innerHTML = btnText;
+                showNotification('Search results updated!');
+            }, 500);
         });
     }
 
-    // Donation Buttons Logic
-    elements.donateBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            elements.donateBtns.forEach(b => b.style.background = 'transparent');
-            elements.donateBtns.forEach(b => b.style.color = 'white');
-            
-            this.style.background = 'white';
-            this.style.color = 'var(--primary)';
+    // Mobile Menu Toggle
+    if (elements.mobileMenuBtn && elements.navbar) {
+        elements.mobileMenuBtn.addEventListener('click', () => {
+            elements.navbar.classList.toggle('active');
         });
-    });
+    }
+
+    // Modal Close Actions
+    if (elements.modalClose && elements.modal) {
+        elements.modalClose.addEventListener('click', closeModal);
+        elements.modal.addEventListener('click', (e) => {
+            if (e.target === elements.modal) closeModal();
+        });
+    }
+
+    // =========================================
+    // Form Submission Handlers (AJAX)
+    // =========================================
+    
+    /**
+     * Generic form submission handler
+     * Sends form data to API endpoint and saves to database
+     */
+    const handleFormSubmit = async (form, apiEndpoint, successMessage) => {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            try {
+                // Get CSRF token
+                const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                
+                // Collect form data
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData);
+                
+                // Special handling for checkboxes (multiple values)
+                if (form.querySelectorAll('input[type="checkbox"]:checked').length > 0) {
+                    const checkedBoxes = form.querySelectorAll('input[type="checkbox"]:checked');
+                    if (checkedBoxes.length > 0) {
+                        const checkboxName = checkedBoxes[0].name;
+                        // Convert array to comma-separated string
+                        const values = Array.from(checkedBoxes).map(cb => cb.value);
+                        data[checkboxName] = values.join(', ');
+                    }
+                }
+                
+                console.log('Form data being sent:', data);
+                console.log('API endpoint:', apiEndpoint);
+                
+                // Show loading state
+                const submitBtn = form.querySelector('button[type="submit"]');
+                const originalBtnText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+                submitBtn.disabled = true;
+                
+                // Send request to API
+                const response = await fetch(apiEndpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                console.log('Response status:', response.status);
+                
+                // Handle response
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log('Success response:', result);
+                    showNotification(successMessage || 'Submitted Successfully!', 'success');
+                    form.reset();
+                } else {
+                    const error = await response.json();
+                    console.error('API Error:', error);
+                    const errorMessage = error.detail || JSON.stringify(error) || 'Failed to submit. Please try again.';
+                    showNotification(errorMessage, 'error');
+                }
+            } catch (error) {
+                console.error('Form submission error:', error);
+                showNotification('An error occurred. Please try again.', 'error');
+            } finally {
+                // Restore button state
+                const submitBtn = form.querySelector('button[type="submit"]');
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+            }
+        });
+    };
+    
+    // Adoption Form
+    const adoptionForm = document.getElementById('adoptionForm');
+    if (adoptionForm) {
+        handleFormSubmit(adoptionForm, '/api/v1/adoptions/', 'Adoption Application Submitted Successfully!');
+    }
+    
+    // Contact Form
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+        handleFormSubmit(contactForm, '/api/v1/contacts/', 'Contact Message Sent Successfully!');
+    }
+    
+    // Volunteer Form
+    const volunteerForm = document.getElementById('volunteerForm');
+    if (volunteerForm) {
+        handleFormSubmit(volunteerForm, '/api/v1/volunteers/', 'Volunteer Application Submitted Successfully!');
+    }
+    
+    // Donation Form
+    const donationForm = document.getElementById('donationForm');
+    if (donationForm) {
+        donationForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            try {
+                const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                const formData = new FormData(donationForm);
+                const data = Object.fromEntries(formData);
+                
+                // Convert checkbox to boolean
+                data.is_anonymous = data.is_anonymous === 'on' ? true : false;
+                
+                console.log('Donation form data:', data);
+                
+                // Show loading state
+                const submitBtn = donationForm.querySelector('button[type="submit"]');
+                const originalBtnText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                submitBtn.disabled = true;
+                
+                const response = await fetch('/api/v1/donations/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                console.log('Donation response status:', response.status);
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log('Donation saved:', result);
+                    showNotification('Thank you for your donation! 💝', 'success');
+                    donationForm.reset();
+                } else {
+                    const error = await response.json();
+                    console.error('Donation error:', error);
+                    const errorMessage = error.detail || JSON.stringify(error) || 'Donation submission failed.';
+                    showNotification(errorMessage, 'error');
+                }
+            } catch (error) {
+                console.error('Donation submission error:', error);
+                showNotification('An error occurred. Please try again.', 'error');
+            } finally {
+                const submitBtn = donationForm.querySelector('button[type="submit"]');
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+            }
+        });
+    }
+    
+    // Newsletter Form
+    const newsletterForm = document.getElementById('newsletterForm');
+    if (newsletterForm) {
+        newsletterForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            try {
+                const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                const email = document.getElementById('newsletterEmail').value;
+                const data = { email: email };
+                
+                console.log('Newsletter data:', data);
+                
+                const submitBtn = newsletterForm.querySelector('button[type="submit"]');
+                const originalBtnText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Subscribing...';
+                submitBtn.disabled = true;
+                
+                const response = await fetch('/api/v1/newsletter/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                console.log('Newsletter response status:', response.status);
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log('Newsletter saved:', result);
+                    showNotification('Successfully subscribed to our newsletter! 📧', 'success');
+                    newsletterForm.reset();
+                } else {
+                    const error = await response.json();
+                    console.error('Newsletter error:', error);
+                    const errorMessage = error.detail || error.email?.[0] || JSON.stringify(error) || 'Subscription failed.';
+                    showNotification(errorMessage, 'error');
+                }
+            } catch (error) {
+                console.error('Newsletter subscription error:', error);
+                showNotification('An error occurred. Please try again.', 'error');
+            } finally {
+                const submitBtn = newsletterForm.querySelector('button[type="submit"]');
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+            }
+        });
+    }
+
+    // Donation Buttons Logic (for UI only - doesn't affect submission)
+    if (elements.donateBtns && elements.donateBtns.length > 0) {
+        elements.donateBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                elements.donateBtns.forEach(b => b.style.background = 'transparent');
+                elements.donateBtns.forEach(b => b.style.color = 'white');
+                
+                this.style.background = 'white';
+                this.style.color = 'var(--primary)';
+            });
+        });
+    }
 
 });
 // =========================================
