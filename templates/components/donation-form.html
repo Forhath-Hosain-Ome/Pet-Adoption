@@ -8,35 +8,38 @@
         {% csrf_token %}
         
         <div class="donation-amounts">
-            <label class="amount-option">
-                <input type="radio" name="amount" value="25" required>
-                <span class="amount-display">$25</span>
-                <span class="amount-description">Feeds a pet for 1 week</span>
-            </label>
-            <label class="amount-option">
-                <input type="radio" name="amount" value="50">
-                <span class="amount-display">$50</span>
-                <span class="amount-description">Medical check-up</span>
-            </label>
-            <label class="amount-option">
-                <input type="radio" name="amount" value="100">
-                <span class="amount-display">$100</span>
-                <span class="amount-description">Monthly care for one pet</span>
-            </label>
-            <label class="amount-option">
-                <input type="radio" name="amount" value="250">
-                <span class="amount-display">$250</span>
-                <span class="amount-description">Emergency rescue operation</span>
-            </label>
+            <button type="button" class="donation-btn" data-amount="25">
+                <span class="donation-amount">$25</span>
+                <span class="donation-description">Feeds a pet for 1 week</span>
+                <span class="check-icon">✓</span>
+            </button>
+            <button type="button" class="donation-btn" data-amount="50">
+                <span class="donation-amount">$50</span>
+                <span class="donation-description">Medical check-up</span>
+                <span class="check-icon">✓</span>
+            </button>
+            <button type="button" class="donation-btn" data-amount="100">
+                <span class="donation-amount">$100</span>
+                <span class="donation-description">Monthly care for one pet</span>
+                <span class="check-icon">✓</span>
+            </button>
+            <button type="button" class="donation-btn" data-amount="250">
+                <span class="donation-amount">$250</span>
+                <span class="donation-description">Emergency rescue operation</span>
+                <span class="check-icon">✓</span>
+            </button>
         </div>
         
-        <div class="form-group">
+        <div class="custom-amount-section">
             <label for="customAmount">Or Enter Custom Amount</label>
-            <div class="input-group">
-                <span class="currency">$</span>
-                <input type="number" id="customAmount" name="custom_amount" min="1" step="0.01" placeholder="0.00">
+            <div class="custom-input-group">
+                <span class="currency-prefix">$</span>
+                <input type="number" id="customAmount" name="custom_amount" min="1" step="0.01" placeholder="Enter amount" class="custom-input">
+                <button type="button" class="custom-btn" id="customBtn">Custom</button>
             </div>
         </div>
+        
+        <input type="hidden" id="selectedAmount" name="amount" value="25">
         
         <div class="form-section">
             <h3>Donor Information</h3>
@@ -65,3 +68,59 @@
         </div>
     </form>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const donationBtns = document.querySelectorAll('.donation-btn');
+    const customBtn = document.getElementById('customBtn');
+    const customAmount = document.getElementById('customAmount');
+    const selectedAmount = document.getElementById('selectedAmount');
+    let currentSelected = document.querySelector('.donation-btn.active');
+    
+    // Set first button as active by default
+    donationBtns[0].classList.add('active');
+    
+    // Handle preset donation buttons
+    donationBtns.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Remove active from all buttons
+            donationBtns.forEach(b => b.classList.remove('active'));
+            customBtn.classList.remove('active');
+            
+            // Add active to clicked button
+            this.classList.add('active');
+            
+            // Clear custom input
+            customAmount.value = '';
+            
+            // Set hidden input value
+            selectedAmount.value = this.dataset.amount;
+            currentSelected = this;
+        });
+    });
+    
+    // Handle custom amount
+    customAmount.addEventListener('input', function() {
+        if (this.value) {
+            // Remove active from preset buttons
+            donationBtns.forEach(b => b.classList.remove('active'));
+            customBtn.classList.add('active');
+            
+            // Set hidden input value
+            selectedAmount.value = this.value;
+        }
+    });
+    
+    // Custom button click
+    customBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (customAmount.value) {
+            donationBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            selectedAmount.value = customAmount.value;
+        }
+    });
+});
+</script>

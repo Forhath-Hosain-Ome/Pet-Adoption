@@ -1,20 +1,32 @@
-<form class="contact-form" id="contactForm" method="post">
+<form class="contact-form standard-form" id="contactForm" method="post">
     {% csrf_token %}
     
     <div class="form-row">
         <div class="form-group">
             <label for="contactName">Full Name *</label>
-            <input type="text" id="contactName" name="name" required>
+            <input type="text" id="contactName" name="name" required placeholder="John Doe">
         </div>
         <div class="form-group">
             <label for="contactEmail">Email Address *</label>
-            <input type="email" id="contactEmail" name="email" required>
+            <input type="email" id="contactEmail" name="email" required placeholder="your@email.com">
         </div>
     </div>
     
     <div class="form-group">
         <label for="contactPhone">Phone Number</label>
-        <input type="tel" id="contactPhone" name="phone">
+        <input type="tel" id="contactPhone" name="phone" placeholder="(123) 456-7890">
+    </div>
+    
+    <div class="form-group">
+        <label for="contactSubject">Subject *</label>
+        <select id="contactSubject" name="subject" required class="subject-select">
+            <option value="">Select a subject...</option>
+            <option value="adoption">Adoption Inquiry</option>
+            <option value="volunteering">Volunteering</option>
+            <option value="donation">Donation Support</option>
+            <option value="feedback">Feedback</option>
+            <option value="other">Other</option>
+        </select>
     </div>
     
     <div class="form-group">
@@ -22,8 +34,12 @@
         <textarea id="contactMessage" name="message" rows="6" required placeholder="Please share your message or inquiry..."></textarea>
     </div>
     
-    <div class="form-actions">
-        <button type="submit" class="btn btn-primary btn-lg">Send Message</button>
-        <button type="reset" class="btn btn-secondary">Clear</button>
+    <div class="form-actions contact-form-actions">
+        <button type="submit" class="btn btn-primary btn-lg">
+            <i class="fas fa-paper-plane"></i> Send Message
+        </button>
+        <button type="reset" class="btn btn-secondary">
+            <i class="fas fa-redo"></i> Clear
+        </button>
     </div>
 </form>
