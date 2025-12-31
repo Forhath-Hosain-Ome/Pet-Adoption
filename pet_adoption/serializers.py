@@ -60,7 +60,7 @@ class ContactSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contact
         fields = [
-            'id', 'name', 'phone', 'email', 'message',
+            'id', 'name', 'phone', 'email', 'subject', 'message',
             'is_read', 'created_at', 'updated_at'
         ]
         read_only_fields = ['id', 'created_at', 'updated_at']
@@ -72,8 +72,9 @@ class VolunteerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Volunteer
         fields = [
-            'id', 'name', 'email', 'phone', 'interest',
-            'status', 'bio', 'availability', 'applied_at', 'updated_at'
+            'id', 'first_name', 'last_name', 'email', 'phone', 'roles',
+            'weekly_hours', 'experience', 'motivation', 'status',
+            'applied_at', 'updated_at'
         ]
         read_only_fields = ['id', 'applied_at', 'updated_at']
 
@@ -81,11 +82,16 @@ class VolunteerSerializer(serializers.ModelSerializer):
 class VolunteerListSerializer(serializers.ModelSerializer):
     """Serializer for Volunteer list view"""
     
+    full_name = serializers.SerializerMethodField()
+    
     class Meta:
         model = Volunteer
         fields = [
-            'id', 'name', 'email', 'interest', 'status', 'applied_at'
+            'id', 'full_name', 'email', 'status', 'applied_at'
         ]
+    
+    def get_full_name(self, obj):
+        return f"{obj.first_name} {obj.last_name}"
 
 
 class DonationSerializer(serializers.ModelSerializer):
@@ -95,7 +101,7 @@ class DonationSerializer(serializers.ModelSerializer):
         model = Donation
         fields = [
             'id', 'donor_name', 'donor_email', 'amount',
-            'is_custom', 'payment_status', 'transaction_id',
+            'is_custom', 'is_anonymous', 'payment_status', 'transaction_id',
             'message', 'created_at', 'completed_at'
         ]
         read_only_fields = ['id', 'created_at', 'completed_at']
